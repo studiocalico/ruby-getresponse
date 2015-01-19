@@ -22,7 +22,7 @@ module GetResponse
       build_contacts(response["result"])
     end
 
-    # Get contact by name
+    # Get contact by email
     # optional limit query to given campaign_id
     #
     # returns:: instance of Getresponse::Contact
@@ -40,6 +40,22 @@ module GetResponse
       end
     end
 
+    # Get contact by ID
+    # optional limit query to given campaign_id
+    #
+    # returns:: instance of Getresponse::Contact
+    # raises GRNotFound if empty result returned
+    #
+    def by_id(id)
+      response = @connection.send_request('get_contact', {'contact' => id })
+
+      if response['result'].empty?
+        raise GRNotFound.new("Contact not found: #{id}")
+      else
+        attrs = response['result'].values.first
+        Contact.new(attrs, @connection)
+      end
+    end
 
     # Create new contact. Method can raise <tt>GetResponseError</tt>.
     #

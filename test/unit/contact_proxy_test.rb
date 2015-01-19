@@ -146,6 +146,15 @@ class GetResponse::ContactProxyTest < Test::Unit::TestCase
     end
   end
 
+  def test_by_id
+    request_params = { 'contact' => { 'CONTACT_ID'} }
+    mock(@connection).send_request('get_contact', request_params ) { contact_found_response }
+    result = @proxy.by_id('CONTACT_ID')
+    assert_kind_of GetResponse::Contact, result
+    assert result.email == 'nobody@example.com'
+    assert result.name == 'No Body'
+  end
+
   protected
   
   def contact_found_response
