@@ -52,7 +52,7 @@ module GetResponse
       if response['result'].empty?
         raise GRNotFound.new("Contact not found: #{id}")
       else
-        attrs = response['result'].values.first
+        attrs = response['result'].values.first.merge('id' => id)
         Contact.new(attrs, @connection)
       end
     end

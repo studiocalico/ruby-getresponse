@@ -69,11 +69,15 @@ module GetResponse
     #
     # net_attrs:: Hash
     def update(new_attrs)
-      # Don't save immediately changes
-      @lazy_save = true
+      if new_attrs['email'] and new_attrs['email'] != self.email
+        @connection.send_request("set_contact_email", { "contact" => self.id, "email" => new_attrs['email'] })
+      end
 
-      new_attrs.each_pair { |key, value| self.send(key + "=", value) }
-      self.save
+      if new_attrs['name'] and new_attrs['name'] != self.name
+        @connection.send_request("set_contact_name", { "contact" => self.id, "name" => new_attrs['name'] })
+      end
+
+      @connection.send_request("set_contact_customs", { "contact" => self.id, "customs" => parse_customs(new_attrs['customs']) })['result']
     end
 
 
