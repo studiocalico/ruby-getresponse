@@ -4,7 +4,7 @@ module GetResponse
 
   # Simple class that simulates connection to service
   class Connection
-    API_URI = ENV['GETRESPONSE_URL'] || "http://api2.getresponse.com/"
+    API_URI = ENV['GET_RESPONSE_URL'] || "http://api2.getresponse.com/"
 
     attr_reader :api_key
 
